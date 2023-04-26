@@ -6,7 +6,6 @@ class Player:
 
     def __init__(self, letters=[]):
         self.letters = letters
-        self.history = []
 
     def get_letters(self, letters=''): # should be taken from board..
         new_letters = letters
@@ -19,7 +18,6 @@ class Player:
             else:
                 print('Invalid.')
         return True
-        # print(self.letters)
     
     def can_i_spell(self, word: str):
         for l in set(word):
@@ -81,6 +79,7 @@ class Player:
 
     def break_word(self, board: Board): # the last word made
         last_word = board.words_made.pop(-1)
+        # give 'QQQ' as first input, tries to break_word when there are none..
         for row, col in last_word.coordinates:
             if (row, col) != last_word.overlap:
                 self.letters.append(board.board.at[row, col])
@@ -117,22 +116,15 @@ class Player:
                     # whole board has been broken. 
                     # try reordering the board from its current state...
                     if input('Whole board has been broken. Attempt reordering from new state?\n') != '':
-                        return
+                        return False
                     else:
-                        self.reorder(board)
-                        return
-
-
+                        return self.reorder(board)
                 else:
                     break
 
             if self.letters != []:
             # tried breaking last and fixing, didnt work, stuck with leftover letter and no words to make again.
             # reset, try the whole process with 2 breaks this time
-                
-                
-
-                
                 self.letters = original_self_letters[:]
                 board.board = original_board.copy()
                 board.words_made = original_words_made[:]
@@ -144,6 +136,5 @@ class Player:
                                  #  but player prob has more letters to input and is cancelling the attempt
                 
             # otherwise, attempt to reorder was successful, letters == [], loop will end now
-        
         print('Reorder attempt successful!')
         return True # reorder attempt succesful
