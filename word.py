@@ -1,4 +1,4 @@
-with open('58k-words.txt') as fin:
+with open('56k-valid-words.txt') as fin:
     WORD_LIST = [x.rstrip().upper() for x in fin.readlines()]
 
 class Word:
