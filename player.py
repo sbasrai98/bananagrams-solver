@@ -1,16 +1,27 @@
+import random
 import pandas as pd
 from board import Board
 from word import Word, word_priority, WORD_LIST
-  
+
 class Player:
 
     def __init__(self, letters=[]):
         self.letters = letters
 
-    def get_letters(self, letters=''): # should be taken from board..
+    def get_letters(self, board: Board, letters=''): # should be taken from board..
         new_letters = letters
         while not(new_letters.isalpha() and new_letters.isupper()):
-            new_letters = input('Enter letters:\n')
+            # i = random.choice(range(len(board.letters)))
+            # new_letters = board.letters.pop(i)
+
+            try:
+                new_letters = random.choice(board.letters)
+            except IndexError:
+                print('You Win!')
+                return False
+            board.letters.remove(new_letters)
+            board.letter_feed.append(new_letters)
+
             if new_letters.isalpha() and new_letters.isupper():
                 self.letters.extend(list(new_letters))
             elif new_letters == 'stop':
@@ -113,12 +124,12 @@ class Player:
                 if new:
                     self.make_word(new, board)
                 elif break_words == len(original_words_made): 
-                    # whole board has been broken. 
-                    # try reordering the board from its current state...
-                    if input('Whole board has been broken. Attempt reordering from new state?\n') != '':
-                        return False
-                    else:
-                        return self.reorder(board)
+                    ### whole board has been broken. 
+                    ### try reordering the board from its current state...
+                    # if input('Whole board has been broken. Attempt reordering from new state?\n') != '':
+                    #     return False
+                    # else:
+                    return self.reorder(board)
                 else:
                     break
 
@@ -130,10 +141,11 @@ class Player:
                 board.words_made = original_words_made[:]
                 break_words += 1
 
-                if input('Continue trying to reorder? (iter=%d)\n' % break_words) != '':
-                    # user doesn't want to keep trying, function returns
-                    return False # was reorder attempt successful? no. 
-                                 #  but player prob has more letters to input and is cancelling the attempt
+                print('let\'s try to reorder..')
+                # if input('Continue trying to reorder? (iter=%d)\n' % break_words) != '':
+                #     # user doesn't want to keep trying, function returns
+                #     return False # was reorder attempt successful? no. 
+                #                  #  but player prob has more letters to input and is cancelling the attempt
                 
             # otherwise, attempt to reorder was successful, letters == [], loop will end now
         print('Reorder attempt successful!')

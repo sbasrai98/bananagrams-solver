@@ -12,8 +12,10 @@ class Board:
     
     def __init__(self):
         self.board = pd.DataFrame(index=range(-100,100), columns=range(-100,100))
-        self.letters = Board.all_letters
+        self.letters = list('JKQXZ'*2 + 'BCFHMPVWY'*3 + 'G'*4 + 'L'*5 + 'DSU'*6 + \
+                       'N'*8 + 'TR'*9 + 'O'*11 + 'I'*12 + 'A'*13 + 'E'*18)
         self.words_made = []
+        self.letter_feed = []
 
     def room_for_word(self, word: Word):        
         must_be_free = []
