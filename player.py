@@ -1,7 +1,7 @@
 import pandas as pd
 from board import Board
 from word import Word, word_priority, WORD_LIST
-
+  
 class Player:
 
     def __init__(self, letters=[]):
