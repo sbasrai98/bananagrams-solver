@@ -1,3 +1,4 @@
+import time
 import random
 import pandas as pd
 from board import Board
@@ -13,7 +14,7 @@ class Player:
         while not(new_letters.isalpha() and new_letters.isupper()):
             # i = random.choice(range(len(board.letters)))
             # new_letters = board.letters.pop(i)
-
+            board.time_steps.append(time.time()-board.start)
             try:
                 new_letters = random.choice(board.letters)
             except IndexError:
@@ -86,7 +87,18 @@ class Player:
             print('\n')
             print(board.board.dropna(axis=0, how='all').dropna(axis=1, how='all').fillna(' '))
             print(self.letters)
-            return word
+
+            print('#####',board.time_steps,'#####')
+            # check how long since last peel.
+            if len(board.time_steps):
+                if ((time.time()-board.start) - board.time_steps[-1]) > 120:
+                    # been 2 minutes, definitely stuck in a loop
+                    return False
+            else: # loop happened with first set of letters
+                if (time.time() - board.start) > 8 and len(board.time_steps) == 0:
+                    return False
+
+            return word # not used...
 
     def break_word(self, board: Board): # the last word made
         last_word = board.words_made.pop(-1)
@@ -122,7 +134,9 @@ class Player:
             while self.letters != []:
                 new = self.choose_word(board, priority=True)
                 if new:
-                    self.make_word(new, board)
+                    if not self.make_word(new, board):
+                        # terminate due to infinite loop
+                        return False
                 elif break_words == len(original_words_made): 
                     ### whole board has been broken. 
                     ### try reordering the board from its current state...

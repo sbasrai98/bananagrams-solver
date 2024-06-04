@@ -1,6 +1,6 @@
 from word import Word
 import pandas as pd
-
+import time
 
 # unittest
 # debugging
@@ -16,6 +16,8 @@ class Board:
                        'N'*8 + 'TR'*9 + 'O'*11 + 'I'*12 + 'A'*13 + 'E'*18)
         self.words_made = []
         self.letter_feed = []
+        self.time_steps = []
+        self.start = time.time()
 
     def room_for_word(self, word: Word):        
         must_be_free = []

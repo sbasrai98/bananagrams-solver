@@ -1,3 +1,6 @@
 *pycache*
 .DS_Store
 setup.py
+games/*
+fails/*
+junkout.txt
