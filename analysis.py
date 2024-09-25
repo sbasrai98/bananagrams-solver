@@ -26,6 +26,8 @@ ax.hist(total_time, bins=100)
 ax.axvline(x=np.mean(total_time), color='red', linestyle='dashed')
 ax.set_xlabel('Completion Time (seconds)')
 ax.set_ylabel('Frequency')
+print(letters.shape[0])
+print(len(passed) / letters.shape[0])
 pd.Series(total_time).describe()
 
 # %%
@@ -39,7 +41,8 @@ ax.pie(data,
         textprops={'fontsize':14},
         startangle=90, counterclock=True,
         colors=colors,
-        labels=data # wedge_labels
+        labels=data, # wedge_labels
+        # labeldistance=0.6
         )
 handles = [mpl.patches.Patch(facecolor=color, edgecolor='black') for color in colors]
 labels = ['Completed', 'Instant Fails', 'Other Fails']
@@ -73,9 +76,14 @@ for id in range(letters.shape[0]):
             incorp_times[l].append(end-start)
 
 for k,v in incorp_times.items(): print(k, len(v))
+
 # %%
 data = [np.mean(incorp_times[x]) for x in list(incorp_times)]
 labels = list(incorp_times)
+mean_incorp = {data[i]:labels[i] for i in range(len(labels))}
+mean_incorp
+data = sorted(data)
+labels = [mean_incorp[i] for i in data]
 
 fig, ax = plt.subplots(figsize=(7,5))
 ax.bar(range(len(data)), data, )#width=0.7, align='edge')
@@ -86,6 +94,7 @@ ax.set_xticklabels(labels)
 ### words in each 
 
 word_counts = {}
+word_lists = [words.loc[i].dropna() for i in words.index]
 for lst in word_lists:
     for w in lst:
         if w not in word_counts:
@@ -95,7 +104,7 @@ word_counts = pd.DataFrame({'word': word_counts.keys(),
                             'count': word_counts.values()})
 word_counts.sort_values(by='count', ascending=False, inplace=True)
 word_counts['len'] = [len(x) for x in word_counts['word']] 
-word_counts = word_counts[word_counts['len'] == 6]
+word_counts = word_counts[word_counts['len'] == 4]
 fig, ax = plt.subplots(figsize=(7,5))
 
 top = 20
@@ -143,7 +152,3 @@ ax.bar(np.arange(len(counts1))*2.3 - 0.7, data[0], width=0.7, align='edge')
 ax.bar(np.arange(len(counts1))*2.3, data[1], width=0.7, align='edge')
 ax.set_xticks(np.arange(len(counts1))*2.3)
 ax.set_xticklabels(labels)
-
-# %%
-
-# can calculate average incorporation time for each letter..
