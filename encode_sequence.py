@@ -22,41 +22,9 @@ def encode3(seq):
     seq = re.sub(r'[JKQXZCV]', '3', seq)
     return seq
 
-
-
-
-###################
 def encode4(seq):
-    # encode4, w=3, 0.23499433405680462
-    seq = re.sub(r'[AEIOUH]', '1', seq)
-    seq = re.sub(r'[MNPSTY]', '2', seq)
-    seq = re.sub(r'[BFWRDLG]', '3', seq)
-    seq = re.sub(r'[JKQXZCV]', '4', seq)
+    # encode3, w=3, 0.2515052279240572
+    seq = re.sub(r'[AEIOU]', '1', seq)
+    seq = re.sub(r'[BMPYTRNDSLGH]', '2', seq)
+    seq = re.sub(r'[FWJKQXZCV]', '3', seq)
     return seq
-
-def encode5(seq):
-    # encode5, w=3, 0.23426424838003496
-    seq = re.sub(r'[AEIOUH]', '1', seq)
-    seq = re.sub(r'[MNPSTY]', '2', seq)
-    # seq = re.sub(r'[]', '3', seq)
-    seq = re.sub(r'[BFWRDLGJKQXZCV]', '4', seq)
-    return seq
-
-
-
-# def encode4(seq):
-#     seq = re.sub(r'[AEIOUHBFMPWYTRNDS]', '1', seq)
-#     seq = re.sub(r'[JKQXZCVLG]', '3', seq)
-#     return seq
-
-# def encode4(seq):
-#     seq = re.sub(r'[AEIOUH]', '1', seq)
-#     seq = re.sub(r'[BFMPWYTRNDS]', '2', seq)
-#     seq = re.sub(r'[JKQXZCVLG]', '3', seq)
-#     return seq
-
-# def encode4(seq):
-#     seq = re.sub(r'[HOMNPSEAITY]', '1', seq)
-#     seq = re.sub(r'[RWBFDU]', '2', seq)
-#     seq = re.sub(r'[KGXLVQCJZ]', '3', seq)
-#     return seq

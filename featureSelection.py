@@ -51,7 +51,7 @@ counts = {2: 'JKQXZ',
           6: 'DSU',
           8: 'N',
           9: 'TR',
-        #   11: 'O',
+        #   11: 'O',  # 0.1% gain if including 1st occurrence
         #   12: 'I',
         #   13: 'A',
         #   18: 'E'
@@ -77,7 +77,41 @@ for i in passed[:]:
             idx = [x for x in range(len(seq)) if seq[x] == l]
             for num in range(1, k+1):
                 X1.at[i, l+str(num)] = idx[num-1]    
+X1.shape
+# %%
+### ADD DISTANCES BETWEEN JKQXZ
+pos_distance = ['Jdist', 'Kdist', 'Qdist', 'Xdist', 'Zdist']
+X1_extra = pd.DataFrame(index=passed, columns=pos_distance,
+                 data=np.zeros((len(passed), len(pos_distance))))
+for i in passed[:]:
+    seq = letters.at[i, 'letters_og']
+    
+    for k, v in [(2, counts[2])]:
+        for l in v:
+            idx = [x for x in range(len(seq)) if seq[x] == l]
+            dist = idx[1] - idx[0]
+            X1_extra.at[i, l+'dist'] = dist
+            # for num in range(1, k+1):
+            #     X1.at[i, l+str(num)] = idx[num-1]    
 
+X1_extra.shape
+
+# %%
+combos = list(itertools.combinations(X1.columns[:10], 2))
+combos = [x[0]+'-'+x[1] for x in combos]
+X1_extra = pd.DataFrame(index=passed, columns=combos,
+                 data=np.zeros((len(passed), len(combos))))
+for i in passed[:]:
+    seq = letters.at[i, 'letters_og']
+    for combo in combos:
+        a, b = combo.split('-')
+        X1_extra.at[i, combo] = np.abs(X1.at[i, a] - X1.at[i, b])
+    
+X1_extra.shape
+
+
+X1 = pd.merge(X1, X1_extra, left_index=True, right_index=True)
+X1.shape
 # %%
 ## generate all sets of 'BCFHMPVWYGLDSUNTR'
 
@@ -99,31 +133,52 @@ leave1 = pd.Series(leave1)
 leave1
 
 # %%
+leaveN = [list(X1.columns[:90])]
+for i in range(2,10):
+    # leaveout = [x for x in X1.columns if x[0] in bad and int(x[1:]) < i]
+    # leaveN.append(leaveout)
+
+    starting = list(X1.columns[:90])
+    bad = 'OAIE'
+
+    addon = [x for x in X1.columns if x[0] in bad and int(x[1:]) < i]
+    leaveN.append(starting + addon)
+
+leaveN = pd.Series(leaveN)
+leaveN
+
+leaveN = [list(X1.columns[:])]
+
+# %%
 results = pd.DataFrame(columns=['r', 'mse'])
 
 X_train, X_test, y_train, y_test = train_test_split(X1, y, test_size=0.2, random_state=42)
 
-for i, lst in enumerate(leave1):
+# for i, lst in enumerate(leave1):
+for i, lst in enumerate(leaveN):
     # print(lst)
     # keep = 'B' + ''.join(lst)  # jkqxz
-    keep = ''.join(lst)
-    keep_cols = [x for x in X1.columns if x[0] in keep]
+    # keep = ''.join(lst)
+    # keep_cols = [x for x in X1.columns if x[0] in keep]
+    
+    keep_cols = lst
     # print(len(keep_cols))
+
 
     data_train = X_train[keep_cols]
     data_test = X_test[keep_cols]
-    
+
+
     # X_train.shape
 
     lr = LinearRegression()
     lr.fit(data_train, y_train)
     y_pred_lr = lr.predict(data_test)
-    # y_pred_lr = lr.predict(X_train)
-
-    # truth = y_train
-
-    r, p = st.pearsonr(y_test, y_pred_lr)
-    mse = mean_squared_error(y_test, y_pred_lr)
+    truth = y_test
+    # y_pred_lr = lr.predict(data_train)
+    # truth = y_train    
+    r, p = st.pearsonr(truth, y_pred_lr)
+    mse = mean_squared_error(truth, y_pred_lr)
     results.loc[i] = r, mse
 
     # if i % 50 == 0: print(f'{i} / {all_subsets.shape[0]}')
