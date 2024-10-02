@@ -87,24 +87,26 @@ lr = LinearRegression()
 lr.fit(X_train, y_train)
 y_pred = lr.predict(X_test)
 
-### transform y_pred to gamma distribution
-# mu, sigma estimated from preds on y_train
-mu, sigma = (514.7762716465542, 33.62115526633094)
-# shape, loc, scale estimated from y_train
-shape, loc, scale = (11.08962739288571, 271.73724963181337, 21.915887559526098)
-uniform = st.norm.cdf(y_pred, mu, sigma)
-y_pred = st.gamma.ppf(uniform, shape, loc, scale)
+# ### transform y_pred to gamma distribution
+# # mu, sigma estimated from preds on y_train
+# mu, sigma = (514.7762716465542, 33.62115526633094)
+# # shape, loc, scale estimated from y_train
+# shape, loc, scale = (11.08962739288571, 271.73724963181337, 21.915887559526098)
+# uniform = st.norm.cdf(y_pred, mu, sigma)
+# y_pred = st.gamma.ppf(uniform, shape, loc, scale)
 
 # %%
 ### PLOT TRUE COMPLETION TIMES VS. PREDICTIONS
-fig, ax = plt.subplots(figsize=(7,5))
+fig, ax = plt.subplots(figsize=(7,4))
 ax.scatter(y_test, y_pred, s=4)
 slope, y_int, r = st.linregress(y_test, y_pred)[:3]
 x_regress = np.linspace(np.min(y_test), np.max(y_test), 1000)
 y_regress = slope*x_regress + y_int
 # ax.plot(x_regress, y_regress, color='red')
-ax.plot(y_test, y_test, color='black')
+# ax.plot(y_test, y_test, color='black')
 mae = np.mean(np.abs(y_test - y_pred))
-ax.set_title(f'Pearson\'s r: {round(r, 2)}, mean absolute error: {round(mae, 1)}s')
-ax.set_xlabel('True completion time (seconds)', fontsize=12)
-ax.set_ylabel('Predicted completion time (seconds)', fontsize=12)
+# ax.set_title(f'Pearson\'s r: {round(r, 2)}, mean absolute error: {round(mae, 1)}s')
+ax.set_xlabel('True completion time (s)', fontsize=12)
+ax.set_ylabel('Predicted completion time (s)', fontsize=12)
+ax.text(0.96, 0.05, f'Pearson\'s r: {round(r, 2)}\nMean absolute error: {round(mae, 1)}s',
+        transform=ax.transAxes, ha='right')

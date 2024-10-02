@@ -55,8 +55,8 @@ ax.legend(handles=handles, labels=labels, ncol=len(handles),
 
 # %%
 ### TIME STEPS ###
-subset = passed
-# subset = failed
+# subset = passed
+subset = failed
 fig, ax = plt.subplots(figsize=(7,3))
 for i in subset:
     ax.step(timesteps.loc[i], range(timesteps.shape[1]), where='post', linewidth=1)
@@ -66,6 +66,35 @@ if subset is passed:
 ax.set_xlabel('Completion Time (s)')
 ax.set_ylabel('Letters Incorporated')
 
+# %%
+### TIME STEPS + HISTO ###
+subset = passed
+# subset = failed
+fig, axs = plt.subplots(2, 1, figsize=(7,6))
+for i in subset:
+    axs[1].step(timesteps.loc[i], range(timesteps.shape[1]), where='post', linewidth=1)
+if subset is passed:
+    axs[1].step(np.mean(timesteps.loc[subset,:], axis=0), range(timesteps.shape[1]),
+            where='post', linewidth=2, color='black', linestyle='dashed')
+axs[1].set_xlabel('Time (s)')
+axs[1].set_ylabel('Letters Incorporated')
+
+total_time = letters.loc[passed, 'time']
+# total_time = letters.loc[failed, 'time']
+
+axs[0].hist(total_time, bins=100)
+# ax.set_ylim(0,30)
+axs[0].axvline(x=np.mean(total_time), color='red', linestyle='dashed',
+               linewidth=2)
+axs[0].set_xlim(axs[1].get_xlim())
+axs[0].get_xaxis().set_visible(False)
+axs[0].set_ylabel('Frequency')
+# print(letters.shape[0])
+# print(len(passed) / letters.shape[0])
+axs[0].text(0.7, 1.9, f'Average: {round(np.mean(total_time), 1)}s',
+        transform=ax.transAxes)
+
+fig.subplots_adjust(hspace=0.03) 
 # %%
 ### AVERAGE INCORPORATION TIME FOR EACH LETTER ###
 # start from i=21, checking what i21 - i20 is to get time for letter21
@@ -109,15 +138,24 @@ word_counts = pd.DataFrame({'word': word_counts.keys(),
                             'count': word_counts.values()})
 word_counts.sort_values(by='count', ascending=False, inplace=True)
 word_counts['len'] = [len(x) for x in word_counts['word']] 
-word_counts = word_counts[word_counts['len'] == 4]
-fig, ax = plt.subplots(figsize=(7,5))
 
-top = 20
-data = word_counts['count'][:top]
-labels = word_counts['word'][:top]
-ax.bar(range(len(data)), data, width=0.5)
-ax.set_xticks(range(len(data)))
-ax.set_xticklabels(labels, rotation=45, ha='right')
+
+fig, axs = plt.subplots(3, 1, figsize=(7,6))
+
+for n, i in zip((4,5,6), (0,1,2)):
+    counts_i = word_counts[word_counts['len'] == n]
+    top = 10
+    data = counts_i['count'][:top]
+    labels = counts_i['word'][:top]
+    axs[i].bar(range(len(data)), data, width=0.5)
+    axs[i].set_xticks(range(len(data)))
+    # if n != 17:
+    axs[i].set_xticklabels(labels, rotation=45, ha='right')
+    axs[i].set_title(f'Most common {n}-letter words')
+    # else:
+    #     axs[i].set_title(f'Longest words (17 letters)')
+    #     axs[i].set_xticklabels(labels)
+fig.tight_layout()
 
 # %%
 ### COMPARE FIRST 21 LETTERS FOR COMPLETED VS. INSTANT FAIL
