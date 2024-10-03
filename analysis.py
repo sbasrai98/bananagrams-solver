@@ -37,7 +37,7 @@ pd.Series(total_time).describe()
 colors = ['green', 'red', 'orange']
 data = [len(passed), len(instant_fail), len(failed) - len(instant_fail)]
 # wedge_labels = [str(round(x / letters.shape[0], 2)) for x in data]
-fig, ax = plt.subplots(figsize=(6,6))
+fig, ax = plt.subplots(figsize=(4,4))
 ax.pie(data,
         wedgeprops={'linewidth':2, 'edgecolor':'black'},
         textprops={'fontsize':14},
@@ -48,10 +48,12 @@ ax.pie(data,
         )
 handles = [mpl.patches.Patch(facecolor=color, edgecolor='black') for color in colors]
 labels = ['Completed', 'Instant Fails', 'Other Fails']
-ax.legend(handles=handles, labels=labels, ncol=len(handles),
-           frameon=False, fontsize=14,
-           loc=(-0.14, 0),
-           )
+ax.legend(handles=handles, labels=labels, frameon=False,
+          fontsize=13, loc=(0.9,0.1))
+# ax.legend(handles=handles, labels=labels, ncol=len(handles),
+#            frameon=False, fontsize=14,
+#            loc=(-0.14, 0),
+#            )
 
 # %%
 ### TIME STEPS ###

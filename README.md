@@ -59,7 +59,7 @@ I used two main strategies to do this. First, simply record the position at whic
 
 94/144 letters were encoded this way. I left out all but the first occurrences of A, E, I, and O because their positions didn't seem to offer much useful information.
 
-The second strategy was to simplify the 26-letter alphabet to a 3-letter alphabet:
+The second strategy is to simplify the 26-letter alphabet to a 3-letter alphabet:
 
 | Original Letter | Converted To |
 | ------------- |:-------------:|
@@ -77,11 +77,11 @@ This roughly translates to easy, medium, and hard letters. "WEQLCE" would thus b
 ------
 313231
 ```
-There are 27 possible 3-mers using an alphabet of size 3, and each k-mer count becomes a feature. Counting kmers provides information about how often vowels, consonants, or difficult letters are received consecutively. I tried different alphabet sizes and values of k but ultimately settled on this scheme as it had the best performance.
+There are 27 possible 3-mers using an alphabet of size 3, and each k-mer count becomes a feature. Counting k-mers provides information about how often vowels, consonants, or difficult letters are received consecutively. I tried different alphabet sizes and values of k but ultimately settled on this scheme as it had the best performance.
 
 ### Linear Regression
 Armed with the 94+27=121 features described above, I trained a linear regression model on the 7747 successful runs (80/20 train-test split). The completion times predicted by the model achieved a correlation of 0.44 with the true times and a mean absolute error of 51.7s.
 
 ![](pics/regression.png)
 
-Not bad for a simple linear regression. There is probably room for improvement by employing more clever feature engineering strategies.
+Not bad for a simple linear regression. There is probably room for improvement by employing more clever feature engineering strategies. Deep learning model coming soon...
