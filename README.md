@@ -1,7 +1,7 @@
 # Bananagrams Solver
 BGSolver plays the word game [Bananagrams](https://en.wikipedia.org/wiki/Bananagrams).
 
-![](pics/bgsolver.gif)
+![](data/plots/bgsolver.gif)
 
 It was originally designed for a competition in which players move the tiles in real life but use their programs to dictate their moves. Thus, it offers you opportunities to cancel reorder attempts (if, for example, your opponent has called "peel" and you would like to enter a new letter). There are 3 game modes:
 
@@ -17,29 +17,29 @@ Letters are randomly drawn with replacement indefinitely. It will take longer to
 ## Insights from 10,000 games of Bananagrams
 I ran BGSolver 10,000 times (with `-auto`) and logged all the details of each run.
 
-![](pics/step_histo.png)
+![](data/plots/step_histo.png)
 
 The completion times follow a gamma distribution with an average time of 513.7 seconds. This will naturally vary depending on the hardware used. When BGSolver gets stuck, it iteratively tries to break words one at a time and resolve the board. The runtime could easily be improved by simply breaking the whole board and starting from scratch every time it gets stuck. However, this would defeat the original purpose of the program; to dictate moves to a human player moving the tiles in real life. Breaking the whole board and starting over would be extremely time consuming and their opponent would probably win.
 
 However, not every run is successful.
 
-![](pics/completionPieChart.png)
+![](data/plots/completionPieChart.png)
 
 It can complete the game about 77.5% of the time but gets stuck in the remaining cases. In Bananagrams, the player starts with an intial set of 21 letters (or fewer, if there are more players). An "instant fail" refers to the case where BGSolver is unable to resolve the board using the initial 21 letters (9.7% of runs). "Other fails" means it got past the initial 21 but ended up getting stuck somewhere else along the way.
 
 To understand why this happens, let's look at the letter distribution for the first 21 letters in "Completed" vs. "Instant Fails".
 
-![](pics/compare_first_21.png)
+![](data/plots/compare_first_21.png)
 
 The "instant fail" runs are depleted of vowels (E, A, I, O) and enriched for the most difficult letters (V, J, K, X, Z, Q). As one might expect, the dynamics of the game are driven by the interplay of vowels and consonants (especially the hard ones) available to the player. We can see this again when considering the average incorporation time (i.e., how long BGSolver takes to fit the letter into the board) for each letter across all 10,000 runs:
 
-![](pics/incorp_times.png)
+![](data/plots/incorp_times.png)
 
 Interestingly, C ranks third for longest incorporation time.
 
 This theme continues as we examine the most commonly made words as well.
 
-![](pics/words2.png)
+![](data/plots/words2.png)
 
 Every single word in the top ten 4, 5, and 6-letter words contains either a Z or J. Since these letters have the fewest possible options for how they can be used, they tend to get funneled into the same words over and over.
 
@@ -82,6 +82,6 @@ There are 27 possible 3-mers using an alphabet of size 3, and each k-mer count b
 ### Linear Regression
 Armed with the 94+27=121 features described above, I trained a linear regression model on the 7747 successful runs (80/20 train-test split). The completion times predicted by the model achieved a correlation of 0.44 with the true times and a mean absolute error of 51.7s.
 
-![](pics/regression.png)
+![](data/plots/regression.png)
 
 Not bad for a simple linear regression. There is probably room for improvement by employing more clever feature engineering strategies. Deep learning model coming soon...
