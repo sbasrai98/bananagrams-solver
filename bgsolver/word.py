@@ -1,5 +1,7 @@
-with open('56k-valid-words.txt') as fin:
-    WORD_LIST = [x.rstrip().upper() for x in fin.readlines()]
+import importlib.resources
+
+words_file = importlib.resources.read_text("bgsolver", "56k_valid_words.txt").rstrip()
+WORD_LIST = [x.upper() for x in words_file.split('\n')]
 
 class Word:
     def __init__(self, word, coordinates, orientation, overlap):
@@ -7,8 +9,6 @@ class Word:
         self.coordinates = coordinates # list of tuples
         self.orientation = orientation # 'horizontal' / 'vertical'
         self.overlap = overlap # tuple of slot overlapping with existing word
-
-    # LEN, get_item -> iter -> contains
 
 def word_priority(word: Word):
     difficulty_order = 'QJZXVKWYFBGHMPDUCLSNTOIRAE'

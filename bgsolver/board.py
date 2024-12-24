@@ -1,10 +1,5 @@
-from word import Word
 import pandas as pd
-
-
-# unittest
-# debugging
-
+from bgsolver.word import Word
 
 class Board:
     all_letters = list('JKQXZ'*2 + 'BCFHMPVWY'*3 + 'G'*4 + 'L'*5 + 'DSU'*6 + \
@@ -42,4 +37,3 @@ class Board:
             if not pd.isna(self.board.at[row, col]):
                 return False
         return True
-

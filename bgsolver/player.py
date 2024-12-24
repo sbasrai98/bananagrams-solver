@@ -1,19 +1,18 @@
 import pandas as pd
-from board import Board
-from word import Word, word_priority, WORD_LIST
+from bgsolver.board import Board
+from bgsolver.word import Word, word_priority, WORD_LIST
 
 class Player:
-
     def __init__(self, letters=[]):
         self.letters = letters
 
     def get_letters(self, letters=''): # should be taken from board..
         new_letters = letters
-        while not(new_letters.isalpha() and new_letters.isupper()):
+        while not(new_letters.isalpha()):
             new_letters = input('Enter letters:\n')
-            if new_letters.isalpha() and new_letters.isupper():
-                self.letters.extend(list(new_letters))
-            elif new_letters == 'stop':
+            if new_letters.isalpha():
+                self.letters.extend(list(new_letters.upper()))
+            elif new_letters == '!stop':
                 return False
             else:
                 print('Invalid.')
@@ -138,3 +137,4 @@ class Player:
             # otherwise, attempt to reorder was successful, letters == [], loop will end now
         print('Reorder attempt successful!')
         return True # reorder attempt succesful
+    

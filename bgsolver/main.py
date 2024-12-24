@@ -1,7 +1,8 @@
-from board import Board
-from word import Word
-from player import Player
 import pandas as pd
+from bgsolver.board import Board
+from bgsolver.word import Word
+from bgsolver.player import Player
+
 pd.set_option('display.max_rows', None,
               'display.max_columns', None,
               'display.width', None)
@@ -32,20 +33,5 @@ next = Word('A',
             'horizontal',
             (5,5))
 
-#GTRXAEBHIOULAPO
-
-b = Board()
-#b.board.at[0,2] = 'F'
-#p = Player(letters=list('FLABBERGASTEDI'))
-p = Player()
-#tst = p.choose_word(b)
-
-# print(b.room_for_word(myword))
-# p.make_word(myword, b)
-# print(p.letters)
-# # print(b.room_for_word(next))
-# # p.place_word(next, b)
-
-# b.board.dropna(axis=0, how='all').dropna(axis=1, how='all')
-
-game_loop()
+if __name__ == '__main__':
+    game_loop()

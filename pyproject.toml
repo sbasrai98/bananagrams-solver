@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "bgsolver"
+version = "0.1"
+description = "An interactive solver for Bananagrams"
+authors = ["sbasrai98"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "bgsolver"}]
+include = ["bgsolver/56k_valid_words.txt"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pandas = "^2.2.3"
+
+[[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
+
+[[tool.poetry.source]]
+name = "testpypi"
+url = "https://test.pypi.org/legacy/"
+priority = "supplemental"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

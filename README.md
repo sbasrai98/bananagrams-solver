@@ -19,7 +19,7 @@ I ran BGSolver 10,000 times (with `-auto`) and logged all the details of each ru
 
 ![](data/plots/step_histo.png)
 
-The completion times follow a gamma distribution with an average time of 513.7 seconds. This will naturally vary depending on the hardware used. When BGSolver gets stuck, it iteratively tries to break words one at a time and resolve the board. The runtime could easily be improved by simply breaking the whole board and starting from scratch every time it gets stuck. However, this would defeat the original purpose of the program; to dictate moves to a human player moving the tiles in real life. Breaking the whole board and starting over would be extremely time consuming and their opponent would probably win.
+The completion times follow a gamma distribution with an average time of 513.7 seconds. This will naturally vary depending on the hardware used. When BGSolver gets stuck, it iteratively tries to break words one at a time and resolve the board. The runtime could easily be improved by simply breaking the whole board and starting from scratch every time it gets stuck. However, this would defeat the original purpose of the program; to dictate moves to a human player moving the tiles in real life. Breaking the whole board and starting over would be very time consuming and the opponent would probably win.
 
 However, not every run is successful.
 
@@ -84,4 +84,4 @@ Armed with the 94+27=121 features described above, I trained a linear regression
 
 ![](data/plots/regression.png)
 
-Not bad for a simple linear regression. There is probably room for improvement by employing more clever feature engineering strategies. Deep learning model coming soon...
+Not bad for a simple linear regression. There is probably room for improvement by employing more clever feature engineering strategies.

@@ -1,7 +1,7 @@
 import unittest
-from board import Board
-from player import Player
-from word import Word
+from bgsolver.board import Board
+from bgsolver.player import Player
+from bgsolver.word import Word
 
 class TestPlayer(unittest.TestCase):
     def setUp(self):
@@ -13,7 +13,3 @@ class TestPlayer(unittest.TestCase):
 
     def test_can_i_spell_2(self):
         self.assertEqual(self.player.can_i_spell('GRAPES'), False, 'word cannot be spelled')
-
-
-
-unittest.main()
