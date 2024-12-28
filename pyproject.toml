@@ -8,6 +8,9 @@ readme = "README.md"
 packages = [{include = "bgsolver"}]
 include = ["bgsolver/56k_valid_words.txt"]
 
+[tool.poetry.scripts]
+bgsolver = "bgsolver.main:main"
+
 [tool.poetry.dependencies]
 python = "^3.9"
 pandas = "^2.2.3"

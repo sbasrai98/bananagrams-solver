@@ -1,3 +1,4 @@
+import random
 import pandas as pd
 from bgsolver.board import Board
 from bgsolver.word import Word, word_priority, WORD_LIST
@@ -6,13 +7,23 @@ class Player:
     def __init__(self, letters=[]):
         self.letters = letters
 
-    def get_letters(self, letters=''): # should be taken from board..
+    def get_letters(self, board, letters='', mode='manual'):
         new_letters = letters
         while not(new_letters.isalpha()):
-            new_letters = input('Enter letters:\n')
+            if mode == 'manual':
+                new_letters = input('Enter letters:\n')
+            else: ## mode == 'auto'
+                try:
+                    new_letters = random.choice(board.letters)
+                except IndexError:
+                    print('You Win!')
+                    return False
+                board.letters.remove(new_letters)
+                # board.letter_feed.append(new_letters)
+            
             if new_letters.isalpha():
                 self.letters.extend(list(new_letters.upper()))
-            elif new_letters == '!stop':
+            elif new_letters == '00':
                 return False
             else:
                 print('Invalid.')
@@ -90,7 +101,7 @@ class Player:
         print(self.letters)
         return last_word
 
-    def reorder(self, board: Board):
+    def reorder(self, board: Board, mode='manual'):
         # stuck with leftover letter. how to deal?
         # break last word, apply priority word building, see if resolves.
         # if not, reset. break last 2 words, apply priority building, see if resolves.
@@ -110,14 +121,17 @@ class Player:
             while self.letters != []:
                 new = self.choose_word(board, priority=True)
                 if new:
-                    self.make_word(new, board)
+                    if not self.make_word(new, board):
+                        # terminate due to infinite loop
+                        return False
                 elif break_words == len(original_words_made): 
                     # whole board has been broken. 
                     # try reordering the board from its current state...
-                    if input('Whole board has been broken. Attempt reordering from new state?\n') != '':
+                    user_input = 'reorder' if mode != 'manual' else input('Whole board has been broken. Attempt reordering from new state?\n')
+                    if user_input != '': # ^ force return False to terminate infinite loop during auto mode.
                         return False
                     else:
-                        return self.reorder(board)
+                        return self.reorder(board, mode='auto')
                 else:
                     break
 
@@ -129,7 +143,8 @@ class Player:
                 board.words_made = original_words_made[:]
                 break_words += 1
 
-                if input('Continue trying to reorder? (iter=%d)\n' % break_words) != '':
+                user_input = '' if mode != 'manual' else input('Continue trying to reorder? (iter=%d)\n' % break_words)
+                if user_input != '':
                     # user doesn't want to keep trying, function returns
                     return False # was reorder attempt successful? no. 
                                  #  but player prob has more letters to input and is cancelling the attempt
