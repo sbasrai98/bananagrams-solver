@@ -19,14 +19,13 @@ class Player:
                     print('You Win!')
                     return False
                 board.letters.remove(new_letters)
-                # board.letter_feed.append(new_letters)
             
             if new_letters.isalpha():
                 self.letters.extend(list(new_letters.upper()))
             elif new_letters == '00':
                 return False
             else:
-                print('Invalid.')
+                print('Invalid input. Only letters are allowed.')
         return True
     
     def can_i_spell(self, word: str):
@@ -116,7 +115,11 @@ class Player:
         break_words = 1
         while self.letters != []:
             for i in range(break_words):
-                self.break_word(board)
+                try:
+                    self.break_word(board)
+                except IndexError:
+                    print('No words have been made yet.')
+                    return False
 
             while self.letters != []:
                 new = self.choose_word(board, priority=True)
@@ -143,7 +146,7 @@ class Player:
                 board.words_made = original_words_made[:]
                 break_words += 1
 
-                user_input = '' if mode != 'manual' else input('Continue trying to reorder? (iter=%d)\n' % break_words)
+                user_input = '' if mode != 'manual' else input(f'Continue trying to reorder? (iter={break_words})\nEnter: Yes   Any key: No\n')
                 if user_input != '':
                     # user doesn't want to keep trying, function returns
                     return False # was reorder attempt successful? no. 

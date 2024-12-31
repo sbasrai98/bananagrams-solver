@@ -22,9 +22,11 @@ def game_manual():
         elif len(player.letters) == original_count:
             # stuck with leftover letter. try reordering
             if player.reorder(board):
-                pass # player has used all letters, next iter will ask for more
+                # player has used all letters, next iter will ask for more
+                pass
             else:
-                if not player.get_letters(board): break # player must have cancelled reorder() to input new letters
+                if not player.get_letters(board): break
+                # player must have cancelled reorder() to input new letters
 
 def game_auto(seed=random.randint(0,10000)):
     board = Board()
@@ -37,14 +39,12 @@ def game_auto(seed=random.randint(0,10000)):
     # remove from board's letters
     for l in player.letters:
         board.letters.remove(l)
-        # board.letter_feed.append(l)
     
     while True: 
         current_time = time.time() - start
-        print('#####',
-              f'letters remaining: {len(board.letters)}',
-              f'time: {current_time}',
-              '#####', sep='\n')
+        print(f'Letters remaining: {len(board.letters)}',
+              f'Time: {round(current_time, 2)}s',
+              sep='\n')
 
         original_count = len(player.letters)
         word = player.choose_word(board)
@@ -53,21 +53,50 @@ def game_auto(seed=random.randint(0,10000)):
         if len(player.letters) == 0:
             if not player.get_letters(board, mode='auto'):
                 total_time = time.time() - start
-                print(f'Total time: {total_time}')
+                print(f'Total time: {round(total_time, 2)}s')
                 break
         elif len(player.letters) == original_count:
             # stuck with leftover letter. try reordering
             if player.reorder(board, mode='auto'):
-                pass # player has used all letters, next iter will ask for more
+                # player has used all letters, next iter will ask for more
+                pass
             else:
                 # reorder() returned False, stuck in infinite loop
                 print('BGSolver was unable to resolve the board.')
                 total_time = time.time() - start
-                print(f'Total time: {total_time}')
+                print(f'Total time: {round(total_time, 2)}s')
                 break
 
 def main():
-    mode = input('Select game mode:\n')
+    print(
+r'''
+############################################################################################
+|  ____                                                                                    |
+| |  _ \                                                                                   |
+| | |_) |   __ _   _ __     __ _   _ __     __ _    __ _   _ __    __ _   _ __ ___    ___  |
+| |  _ <   / _` | | '_ \   / _` | | '_ \   / _` |  / _` | | '__|  / _` | | '_ ` _ \  / __| |
+| | |_) | | (_| | | | | | | (_| | | | | | | (_| | | (_| | | |    | (_| | | | | | | | \__ \ |
+| |____/   \__,_| |_| |_|  \__,_| |_| |_|  \__,_|  \__, | |_|     \__,_| |_| |_| |_| |___/ |
+|                                                   __/ |                                  |
+|                                                  |___/                                   |
+|                         _____           _                                                |
+|                        / ____|         | |                                               |
+|                       | (___     ___   | | __   __   ___   _ __                          |
+|                        \___ \   / _ \  | | \ \ / /  / _ \ | '__|                         |
+|                        ____) | | (_) | | |  \ V /  |  __/ | |                            |
+|                       |_____/   \___/  |_|   \_/    \___| |_|                            |
+|                                                                                          |
+############################################################################################
+''')
+    mode = ''
+    while not(mode.isnumeric()):
+        mode = input(
+'''Select game mode:
+1 : Enter letters manually.
+2+: Draw letters randomly until the game is complete (144 letters).
+    - the number you enter will be used as the random seed
+''')
+
     if mode == '1':
         game_manual()
     else:
