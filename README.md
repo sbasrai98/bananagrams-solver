@@ -1,8 +1,6 @@
 # Bananagrams Solver
 BGSolver plays the word game [Bananagrams](https://en.wikipedia.org/wiki/Bananagrams). 
-
 ![](data/plots/bgsolver.gif)
-
 It was originally designed for a competition in which players move the tiles in real life but use their programs to dictate their moves. Thus, it offers you opportunities to cancel reorder attempts (if, for example, your opponent has called "peel" and you would like to enter a new letter). There are 2 game modes:
 
 1. **Manual** \
@@ -12,8 +10,10 @@ The user inputs letters manually. When asked if you would like to continue, hit 
 Letters are randomly drawn without replacement from the set of 144 letters in the original game. The program will either complete the game (about 77.5% of the time, see analysis below) or get stuck in an infinite loop due to a hard scramble (no "dumps" allowed!).
 
 ## Installation
-Simply install from PyPI with: `pip install bgsolver`. The program can then be invoked directly from the terminal with: `bgsolver`.
-
+```
+pip install bgsolver
+bgsolver # run from terminal
+```
 ## Insights from 10,000 games of Bananagrams
 I ran BGSolver 10,000 times (random run mode) and logged all the details of each run.
 
