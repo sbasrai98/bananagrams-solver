@@ -1,6 +1,6 @@
 # Bananagrams Solver
 BGSolver plays the word game [Bananagrams](https://en.wikipedia.org/wiki/Bananagrams). 
-![](data/plots/bgsolver.gif)
+![](data/plots/bgsolver.gif) \
 It was originally designed for a competition in which players move the tiles in real life but use their programs to dictate their moves. Thus, it offers you opportunities to cancel reorder attempts (if, for example, your opponent has called "peel" and you would like to enter a new letter). There are 2 game modes:
 
 1. **Manual** \
