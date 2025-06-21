@@ -134,7 +134,7 @@ class Player:
                     if user_input != '': # ^ force return False to terminate infinite loop during auto mode.
                         return False
                     else:
-                        return self.reorder(board, mode='auto')
+                        return self.reorder(board, mode=mode)
                 else:
                     break
 

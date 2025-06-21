@@ -19,11 +19,6 @@ pandas = "^2.2.3"
 name = "PyPI"
 priority = "primary"
 
-[[tool.poetry.source]]
-name = "testpypi"
-url = "https://test.pypi.org/legacy/"
-priority = "supplemental"
-
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
